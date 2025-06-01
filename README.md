@@ -60,3 +60,6 @@ Next Steps:
 - Add Gunicorn as a WSGI server for better performance
 - Configure Nginx as a reverse proxy
 - Use a domain name and SSL for production
+
+  [Connect with me on LinkedIn]( https://www.linkedin.com/in/bhagyashribobade/)
+
