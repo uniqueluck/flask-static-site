@@ -1,35 +1,50 @@
-# Flask-static-site
-
-Flask-static-site is a skeleton Python/Flask application ready to be deployed as a static website. You just need to define your own styles, update the content and build the website.
-
-Flask-static-site is released under an MIT Licence.
-
-
-## Motivation
-
-Building static websites with frameworks such as Flask allows for a clear separation of concerns. For instance, you can separate website functionality over multiple files or use technologies, such as markdown, to generate HTML content. It gives you the benefits of a dynamic framework with the speed of serving static files.
-
-This project is based on [this tutorial by Nicolas Perriault](https://nicolas.perriault.net/code/2012/dead-easy-yet-powerful-static-website-generator-with-flask/). You should try to do it, and maybe check my code for some other ideas.
-
-
-## Installation
-
-Flask-static-site is a Python 3 application and depends on the **Flask** microframework, **flask_flatpages** to read and parse markdown files from the filesystem and **flask_frozen** to generate static html files for each URL route. Install them with:
-
-> pip3 install -r requirements.txt
-
-To get flask-static-site, you can clone this repository or download a zip file from the right menu.
-
-
-## Development & Building
-
-Start the development server with `python3 site.py`, open a browser and go to [http://localhost:8000](http://localhost:8000). You should see the skeleton website fully functional.
-
-To add content to the website, open the **pages** folder and check its content. Basically, every website page is a markdown file converted to HTML. In **pages/blog** you will find the blog articles.
-
-In the **static** folder you should put all static files, such as images, css styles and other files. Adapt the css to your own needs.
-
-If you need to change some functionality, check the flask source code at **site.py**. It's the only Python code, and it is very simple to understand once you understand Flask.
-
-Finally, to build the static website, just run `python3 site.py build` in the console. The result will be in **/build**. Upload it to a static webserver and you're done!
-
+Flask Static Site Deployment on AWS EC2
+Project Name:
+Flask Static Website Deployment on Amazon Linux EC2
+Objective:
+To deploy a Python Flask-based static website on an Amazon EC2 instance running Amazon Linux, making it publicly
+accessible via EC2's public IP and custom port 8000.
+Prerequisites:
+- AWS Account
+- Flask application code (on GitHub)
+- EC2 instance (Amazon Linux)
+- Security Group access to custom ports (8000)
+Step-by-Step Deployment Guide
+1. Launch EC2 Instance
+- AMI: Amazon Linux 2
+- Instance Type: t2.micro (Free Tier eligible)
+- Key Pair: Create or use existing
+- Security Group: Allow port 22 (SSH) and 8000 (Custom TCP)
+2. Connect to EC2 via SSH
+ssh -i your-key.pem ec2-user@<EC2-public-IP>
+3. Install Required Packages
+sudo yum update -y
+sudo yum install python3 git -y
+4. Clone Your Flask Project from GitHub
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
+5. Set Up Python Virtual Environment
+python3 -m venv venv
+source venv/bin/activate
+6. Install Flask and Other Dependencies
+pip install -r requirements.txt
+7. Run the Flask Application
+Ensure site.py contains:
+app.run(host='0.0.0.0', port=8000)
+Then run:
+python3 site.py
+8. Update EC2 Security Group (if not already done)
+Allow Custom TCP:
+- Port: 8000
+- Source: 0.0.0.0/0
+9. Access the App in Browser
+http://<EC2-public-IP>:8000
+Outcome:
+Your Flask static site is now live and accessible from anywhere via the EC2 public IP and port 8000.
+Important Notes:
+- The built-in Flask server is for development only. For production use, consider setting up Gunicorn + Nginx.
+- Avoid exposing your instance with open ports in a real-world production app without proper firewall and security settings.
+Next Steps:
+- Add Gunicorn as a WSGI server for better performance
+- Configure Nginx as a reverse proxy
+- Use a domain name and SSL for production
